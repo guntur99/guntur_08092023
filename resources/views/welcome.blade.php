@@ -221,10 +221,18 @@
                     </div>
                 </div>
                 <div class="row">
-                    <button type="button" style="border: 4px">Tampilkan</button>
+                    <button type="button" style="border: 4px" onclick="show()">Tampilkan</button>
                     <button type="button" style="border: 4px">Reset</button>
                 </div>
             </form>
             </div>
     </body>
+    <script>
+        function show() {
+            var fullName = document.getElementById("full_name").value,
+             dob = document.getElementById("full_name").value;
+            var fullName = document.getElementById("full_name").value;
+            var fullName = document.getElementById("full_name").value;
+        }
+    </script>
 </html>
