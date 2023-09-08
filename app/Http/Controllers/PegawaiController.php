@@ -4,62 +4,78 @@ namespace App\Http\Controllers;
 
 use App\Models\Pegawai;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class PegawaiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct(){
+        $this->now = Carbon::now('Asia/Jakarta');
+    }
+
     public function index()
     {
-        //
+        $pegawai = Pegawai::get();
+
+        return view('pegawai.index', [
+            'pegawai' => $pegawai,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('pegawai.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store()
     {
-        //
+        request()->validate([
+            'pegawai_name'     => ['required', 'string', 'max:255'],
+            'pegawai_jabatan'  => ['required', 'string'],
+            'pegawai_umur'     => ['required'],
+            'pegawai_alamat'   => ['required', 'string'],
+        ]);
+
+        $pegawai                    = new Pegawai;
+        $pegawai->pegawai_id        = request()->pegawai_id;
+        $pegawai->pegawai_name      = request()->pegawai_name;
+        $pegawai->pegawai_jabatan   = request()->pegawai_jabatan;
+        $pegawai->pegawai_umur      = request()->pegawai_umur;
+        $pegawai->pegawai_alamat    = request()->pegawai_alamat;
+        $pegawai->created_at        = $this->now;
+        $pegawai->save();
+
+        return redirect()->route('index.pegawai');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Pegawai $pegawai)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Pegawai $pegawai)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Pegawai $pegawai)
+    public function update()
     {
-        //
+
+        $pegawai                    = Pegawai::find(request()->id);
+        $pegawai->pegawai_id        = request()->pegawai_id;
+        $pegawai->pegawai_name      = request()->pegawai_name;
+        $pegawai->pegawai_jabatan   = request()->pegawai_jabatan;
+        $pegawai->pegawai_umur      = request()->pegawai_umur;
+        $pegawai->pegawai_alamat    = request()->pegawai_alamat;
+        $pegawai->created_at        = $this->now;
+        $pegawai->save();
+
+        return redirect()->route('index.pegawai');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Pegawai $pegawai)
+    public function destroy()
     {
-        //
+        Pegawai::find(request()->id)->delete();
+
+        return response('Delete Successfuly!', 200);
     }
 }
